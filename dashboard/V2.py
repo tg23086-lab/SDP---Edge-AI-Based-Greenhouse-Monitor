@@ -3,7 +3,7 @@ import pandas as pd
 from streamlit_autorefresh import st_autorefresh
 
 st.set_page_config(page_title="StemCube Dashboard", layout="wide")
-st.title("🚀 StemCube Real-Time Air Quality Monitor")
+st.title("StemCube Real-Time Air Quality Monitor")
 
 # ==============================================================================
 # 1. GOOGLE SHEET URL
@@ -40,10 +40,12 @@ try:
         st.subheader(f"Last Updated from Pico: {latest.get('timestamp', 'N/A')}")
         
         # --- DASHBOARD LAYOUT ---
-        col1, col2, col3, col4 = st.columns(4)
+        col1, col2, col3, col4, col5, col6 = st.columns(6)
         col1.metric("eCO2 Level", f"{latest.get('eco2_ppm', 0)} ppm")
         col2.metric("TVOC Level", f"{latest.get('tvoc_ppb', 0)} ppb")
         col3.metric("Temperature", f"{latest.get('temperature_c', 0.0)} °C")
+        col4.metric("Humidity", f"{latest.get('humidity_pct', 0.0)} %")
+        col5.metric("Pressure", f"{latest.get('pressure_hpa', 0.0)} hPa")
         
         # Color coding the status via markdown for visual flair during presentation
         cond_str = str(latest.get('condition', 'N/A')).upper()
@@ -52,7 +54,7 @@ try:
         elif "ALERT" in cond_str:
             st.warning(f"⚠️ ATTENTION REQUIRED: {cond_str}")
         else:
-            col4.metric("Current Condition", cond_str)
+            col6.metric("Current Condition", cond_str)
         
         st.divider()
         
